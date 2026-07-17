@@ -39,4 +39,4 @@ Open [`index.html`](index.html) in a browser to view the project overview image 
 demo video.
 
 - `self_balancing_robot.png` — system overview (architecture, wiring, control, results)
-- `self_balancing_car.mov` — live balancing demo
+- `self_balancing_car.mp4` — live balancing demo
