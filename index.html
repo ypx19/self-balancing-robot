@@ -24,7 +24,7 @@
       color: var(--text);
       line-height: 1.65;
     }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 48px 20px 80px; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 48px 20px 80px; }
     header { text-align: center; margin-bottom: 42px; }
     .eyebrow {
       display: inline-block;
@@ -38,7 +38,16 @@
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .subtitle { color: var(--muted); font-size: 18px; max-width: 640px; margin: 0 auto; }
+    .subtitle { color: var(--muted); font-size: 18px; max-width: 660px; margin: 0 auto; }
+    .toc {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 22px;
+    }
+    .toc a {
+      font-size: 13px; color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border); background: #0f1830;
+      padding: 6px 12px; border-radius: 999px; transition: .15s;
+    }
+    .toc a:hover { color: var(--text); border-color: var(--accent); }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -46,31 +55,30 @@
       padding: 22px;
       margin: 28px 0;
       box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      scroll-margin-top: 20px;
     }
     .card h2 {
-      font-size: 20px; margin: 0 0 16px;
+      font-size: 20px; margin: 0 0 6px;
       display: flex; align-items: center; gap: 10px;
     }
-    .card h2 .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+    .card h2 .num {
+      width: 26px; height: 26px; flex: none; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06122c; font-size: 14px; font-weight: 700;
+      display: grid; place-items: center;
+    }
+    .card .lead { color: var(--muted); font-size: 14px; margin: 0 0 16px; padding-left: 36px; }
     figure { margin: 0; }
     img, video { width: 100%; height: auto; display: block; border-radius: 12px; background: #000; }
-    figcaption { color: var(--muted); font-size: 14px; margin-top: 10px; text-align: center; }
     p { color: #cdd6ea; }
     .highlights { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 12px; }
-    .highlights li {
-      padding-left: 26px; position: relative; color: #cdd6ea;
-    }
-    .highlights li::before {
-      content: "▹"; position: absolute; left: 0; color: var(--accent-2); font-weight: bold;
-    }
+    .highlights li { padding-left: 26px; position: relative; color: #cdd6ea; }
+    .highlights li::before { content: "▹"; position: absolute; left: 0; color: var(--accent-2); font-weight: bold; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
-    .chip {
-      background: #0f1830; border: 1px solid var(--border); border-radius: 10px;
-      padding: 12px 14px; font-size: 14px; color: var(--muted); text-align: center;
-    }
+    .chip { background: #0f1830; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 14px; color: var(--muted); text-align: center; }
     .chip strong { display: block; color: var(--text); font-size: 15px; margin-bottom: 2px; }
     footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 40px; }
-    @media (max-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } .card .lead { padding-left: 0; } }
   </style>
 </head>
 <body>
@@ -82,15 +90,24 @@
         A two-wheeled self-balancing robot built end-to-end — from hardware to
         real-time cascaded PID control that keeps it standing upright.
       </p>
+      <nav class="toc">
+        <a href="#overview">Overview</a>
+        <a href="#hardware">Hardware</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#pid">PID Strategy</a>
+        <a href="#encoder">Encoder</a>
+        <a href="#performance">Performance</a>
+        <a href="#demo">Demo</a>
+      </nav>
     </header>
 
-    <section class="card">
-      <h2><span class="dot"></span>Overview</h2>
+    <section class="card" id="overview">
+      <h2><span class="num">i</span>Overview</h2>
       <p>
         This project implements a two-wheeled self-balancing robot using an advanced
-        PID control policy. The robot estimates its body angle and continuously adjusts
-        motor output to maintain balance, forming a closed-loop control system similar
-        to the basic principle behind Segway-like robots.
+        (cascaded) PID control policy. The robot estimates its body angle and continuously
+        adjusts motor output to maintain balance, forming a closed-loop control system
+        similar to the basic principle behind Segway-like robots.
       </p>
       <p>
         It combines hardware integration, sensor feedback, real-time control, and
@@ -100,28 +117,60 @@
       </p>
     </section>
 
-    <section class="card">
-      <h2><span class="dot"></span>System &amp; Control Design</h2>
+    <section class="card" id="hardware">
+      <h2><span class="num">1</span>Hardware Connection</h2>
+      <p class="lead">Power regulation, sensors, controller, motor driver, and encoder-equipped motors.</p>
       <figure>
-        <img src="self_balancing_robot.png" alt="Self-balancing robot system overview: architecture, hardware wiring, cascaded PID control and performance." />
-        <figcaption>System overview — architecture, hardware wiring, cascaded PID control, and performance comparison.</figcaption>
+        <img src="imgs/hardware_connection.png" alt="Hardware wiring: 3S LiPo battery, buck converter, MPU6050 IMU, Arduino Nano, HC08 motor driver, and encoder motors." />
       </figure>
     </section>
 
-    <section class="card">
-      <h2><span class="dot"></span>It Actually Balances</h2>
+    <section class="card" id="architecture">
+      <h2><span class="num">2</span>Control Architecture</h2>
+      <p class="lead">Cascaded loops: an outer angle (pitch) loop feeding an inner velocity loop.</p>
+      <figure>
+        <img src="imgs/control_architecture.png" alt="Cascaded PID block diagram: outer angle loop and inner velocity loop running on the Arduino Nano." />
+      </figure>
+    </section>
+
+    <section class="card" id="pid">
+      <h2><span class="num">3</span>PID Control Strategy</h2>
+      <p class="lead">Angle loop stabilizes the robot upright; velocity loop tracks the target wheel speed.</p>
+      <figure>
+        <img src="imgs/PID_control_strategy.png" alt="PID control strategy with equations for the outer angle loop and inner velocity loop, and tuning tips." />
+      </figure>
+    </section>
+
+    <section class="card" id="encoder">
+      <h2><span class="num">4</span>Encoder Speed Estimation</h2>
+      <p class="lead">Two interrupt-driven methods — fixed time window vs. fixed pulse count — with a trade-off comparison.</p>
+      <figure>
+        <img src="imgs/encoder_speed_estimation.png" alt="Encoder speed estimation: Method A fixed time window and Method B fixed pulse count, with pros, cons and comparison." />
+      </figure>
+    </section>
+
+    <section class="card" id="performance">
+      <h2><span class="num">5</span>Control Performance</h2>
+      <p class="lead">Single angle loop vs. cascaded control — angle, wheel speed, and control effort.</p>
+      <figure>
+        <img src="imgs/control_performance.png" alt="Performance comparison of single angle loop vs cascaded control across pitch angle, wheel speed and PWM effort." />
+      </figure>
+    </section>
+
+    <section class="card" id="demo">
+      <h2><span class="num">6</span>It Actually Balances</h2>
+      <p class="lead">Live demo — the robot recovering and holding balance in real time.</p>
       <figure>
         <video controls playsinline preload="metadata">
-          <source src="self_balancing_car.mp4" type="video/mp4" />
+          <source src="video/self_balancing_car.mp4" type="video/mp4" />
           Your browser cannot play this video. You can
-          <a href="self_balancing_car.mp4" style="color: var(--accent-2)">download it here</a>.
+          <a href="video/self_balancing_car.mp4" style="color: var(--accent-2)">download it here</a>.
         </video>
-        <figcaption>Live demo — the robot recovering and holding balance in real time.</figcaption>
       </figure>
     </section>
 
     <section class="card">
-      <h2><span class="dot"></span>Highlights</h2>
+      <h2><span class="num">+</span>Highlights</h2>
       <ul class="highlights">
         <li>Engineered a self-balancing robot integrating an Arduino Nano, MPU6050 IMU, HC08 motor driver, encoder-equipped DC motors, and power regulation into a real-time embedded control platform.</li>
         <li>Designed a dual-loop PID controller regulating pitch angle through nested angle and velocity feedback, eliminating the long-term drift seen with single-loop balancing and improving recovery robustness.</li>

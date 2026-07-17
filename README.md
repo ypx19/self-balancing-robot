@@ -35,8 +35,17 @@ model-based control.
 
 ## Demo
 
-Open [`index.html`](index.html) in a browser to view the project overview image and the
-demo video.
+Open [`index.html`](index.html) in a browser (or visit the live page) to view the
+detailed diagrams and the balancing demo video.
 
-- `self_balancing_robot.png` — system overview (architecture, wiring, control, results)
-- `self_balancing_car.mp4` — live balancing demo
+### Diagrams (`imgs/`)
+
+- `hardware_connection.png` — power, sensors, controller, motor driver, motors
+- `control_architecture.png` — cascaded control block diagram
+- `PID_control_strategy.png` — outer angle loop + inner velocity loop equations
+- `encoder_speed_estimation.png` — fixed-time vs. fixed-pulse speed estimation
+- `control_performance.png` — single loop vs. cascaded control comparison
+
+### Video (`video/`)
+
+- `video/self_balancing_car.mp4` — live balancing demo (H.264)
