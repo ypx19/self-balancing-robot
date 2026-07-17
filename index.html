@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Balancing Robot — from scratch</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #131a2e;
+      --accent: #4f8cff;
+      --accent-2: #22d3ee;
+      --text: #e7ecf5;
+      --muted: #9aa6bf;
+      --border: #23304f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 80% -10%, #1a2b4d 0, transparent 60%),
+                  radial-gradient(1000px 500px at 0% 0%, #10203f 0, transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 48px 20px 80px; }
+    header { text-align: center; margin-bottom: 42px; }
+    .eyebrow {
+      display: inline-block;
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent-2); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      margin: 0 0 12px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .subtitle { color: var(--muted); font-size: 18px; max-width: 640px; margin: 0 auto; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin: 28px 0;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+    .card h2 {
+      font-size: 20px; margin: 0 0 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card h2 .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+    figure { margin: 0; }
+    img, video { width: 100%; height: auto; display: block; border-radius: 12px; background: #000; }
+    figcaption { color: var(--muted); font-size: 14px; margin-top: 10px; text-align: center; }
+    p { color: #cdd6ea; }
+    .highlights { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 12px; }
+    .highlights li {
+      padding-left: 26px; position: relative; color: #cdd6ea;
+    }
+    .highlights li::before {
+      content: "▹"; position: absolute; left: 0; color: var(--accent-2); font-weight: bold;
+    }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+    .chip {
+      background: #0f1830; border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px 14px; font-size: 14px; color: var(--muted); text-align: center;
+    }
+    .chip strong { display: block; color: var(--text); font-size: 15px; margin-bottom: 2px; }
+    footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 40px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow">Embedded Control · from scratch</span>
+      <h1>Self-Balancing Robot</h1>
+      <p class="subtitle">
+        A two-wheeled self-balancing robot built end-to-end — from hardware to
+        real-time cascaded PID control that keeps it standing upright.
+      </p>
+    </header>
+
+    <section class="card">
+      <h2><span class="dot"></span>Overview</h2>
+      <p>
+        This project implements a two-wheeled self-balancing robot using an advanced
+        PID control policy. The robot estimates its body angle and continuously adjusts
+        motor output to maintain balance, forming a closed-loop control system similar
+        to the basic principle behind Segway-like robots.
+      </p>
+      <p>
+        It combines hardware integration, sensor feedback, real-time control, and
+        parameter tuning — demonstrating how classical control methods can stabilize an
+        inherently unstable physical system, and laying a foundation for more advanced
+        topics such as state feedback, trajectory tracking, and model-based control.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="dot"></span>System &amp; Control Design</h2>
+      <figure>
+        <img src="self_balancing_robot.png" alt="Self-balancing robot system overview: architecture, hardware wiring, cascaded PID control and performance." />
+        <figcaption>System overview — architecture, hardware wiring, cascaded PID control, and performance comparison.</figcaption>
+      </figure>
+    </section>
+
+    <section class="card">
+      <h2><span class="dot"></span>It Actually Balances</h2>
+      <figure>
+        <video controls playsinline preload="metadata">
+          <source src="self_balancing_car.mov" type="video/quicktime" />
+          Your browser cannot play this video. You can
+          <a href="self_balancing_car.mov" style="color: var(--accent-2)">download it here</a>.
+        </video>
+        <figcaption>Live demo — the robot recovering and holding balance in real time.</figcaption>
+      </figure>
+    </section>
+
+    <section class="card">
+      <h2><span class="dot"></span>Highlights</h2>
+      <ul class="highlights">
+        <li>Engineered a self-balancing robot integrating an Arduino Nano, MPU6050 IMU, HC08 motor driver, encoder-equipped DC motors, and power regulation into a real-time embedded control platform.</li>
+        <li>Designed a dual-loop PID controller regulating pitch angle through nested angle and velocity feedback, eliminating the long-term drift seen with single-loop balancing and improving recovery robustness.</li>
+        <li>Implemented interrupt-driven encoder processing with both fixed-time and fixed-pulse velocity estimation, evaluating their responsiveness and noise characteristics for reliable motor feedback.</li>
+      </ul>
+      <div class="grid">
+        <div class="chip"><strong>Arduino Nano</strong>Controller</div>
+        <div class="chip"><strong>MPU6050</strong>6-axis IMU</div>
+        <div class="chip"><strong>HC08</strong>Motor driver</div>
+        <div class="chip"><strong>DC + Encoders</strong>Motors</div>
+        <div class="chip"><strong>Cascaded PID</strong>Angle + velocity</div>
+        <div class="chip"><strong>Real-time</strong>Closed-loop</div>
+      </div>
+    </section>
+
+    <footer>
+      Self-Balancing Robot — from scratch · Built with an Arduino Nano and a cascaded PID controller.
+    </footer>
+  </div>
+</body>
+</html>
