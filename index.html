@@ -91,15 +91,27 @@
         real-time cascaded PID control that keeps it standing upright.
       </p>
       <nav class="toc">
+        <a href="#demo">Demo</a>
         <a href="#overview">Overview</a>
         <a href="#hardware">Hardware</a>
         <a href="#architecture">Architecture</a>
         <a href="#pid">PID Strategy</a>
         <a href="#encoder">Encoder</a>
         <a href="#performance">Performance</a>
-        <a href="#demo">Demo</a>
       </nav>
     </header>
+
+    <section class="card" id="demo">
+      <h2><span class="num">&#9654;</span>It Actually Balances</h2>
+      <p class="lead">Live demo — the robot recovering and holding balance in real time.</p>
+      <figure>
+        <video controls playsinline preload="metadata">
+          <source src="video/self_balancing_car.mp4" type="video/mp4" />
+          Your browser cannot play this video. You can
+          <a href="video/self_balancing_car.mp4" style="color: var(--accent-2)">download it here</a>.
+        </video>
+      </figure>
+    </section>
 
     <section class="card" id="overview">
       <h2><span class="num">i</span>Overview</h2>
@@ -154,18 +166,6 @@
       <p class="lead">Single angle loop vs. cascaded control — angle, wheel speed, and control effort.</p>
       <figure>
         <img src="imgs/control_performance.png" alt="Performance comparison of single angle loop vs cascaded control across pitch angle, wheel speed and PWM effort." />
-      </figure>
-    </section>
-
-    <section class="card" id="demo">
-      <h2><span class="num">6</span>It Actually Balances</h2>
-      <p class="lead">Live demo — the robot recovering and holding balance in real time.</p>
-      <figure>
-        <video controls playsinline preload="metadata">
-          <source src="video/self_balancing_car.mp4" type="video/mp4" />
-          Your browser cannot play this video. You can
-          <a href="video/self_balancing_car.mp4" style="color: var(--accent-2)">download it here</a>.
-        </video>
       </figure>
     </section>
 
